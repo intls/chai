@@ -63,15 +63,14 @@ class Fetcher:
         os.symlink(latest_path, latest_symlink)
 
     def fetch(self):
-        if self.fetch:
-            response = get(self.source)
-            try:
-                response.raise_for_status()
-            except Exception as e:
-                self.logger.error(f"error fetching {self.source}: {e}")
-                raise e
+        response = get(self.source)
+        try:
+            response.raise_for_status()
+        except Exception as e:
+            self.logger.error(f"error fetching {self.source}: {e}")
+            raise e
 
-            return response.content
+        return response.content
 
     def cleanup(self):
         if self.no_cache:
@@ -104,16 +103,16 @@ class TarballFetcher(Fetcher):
 
 
 class JSONFetcher(Fetcher):
-    def __init__(self, name: str, source: str):
-        super().__init__(name, source)
+    def __init__(self, name: str, config: Config):
+        super().__init__(name, config)
 
     def fetch(self):
         pass
 
 
 class YAMLFetcher(Fetcher):
-    def __init__(self, name: str, source: str):
-        super().__init__(name, source)
+    def __init__(self, name: str, config: Config):
+        super().__init__(name, config)
 
     def fetch(self):
         pass
